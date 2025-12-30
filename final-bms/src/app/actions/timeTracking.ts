@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
 export async function startTimer(cardId: number) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: "Authentication required." };
 
@@ -41,7 +41,7 @@ export async function startTimer(cardId: number) {
 }
 
 export async function stopTimer(logId: number) {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return { error: "Authentication required." };
 
@@ -57,7 +57,7 @@ export async function stopTimer(logId: number) {
         `)
         .eq("id", logId)
         .eq("user_id", user.id)
-        .single();
+        .single() as any;
     
     if (timeLogError || !timeLog) return { error: "Active time log not found." };
 

@@ -3,7 +3,7 @@ import { Home, Folder, Users, DollarSign, ClipboardList, TrendingUp, UsersRound,
 import Link from 'next/link';
 
 const Sidebar = async () => {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   let userRole = 'public';

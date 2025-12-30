@@ -2,7 +2,7 @@
 "use server";
 
 import { supabaseAdmin } from "@/lib/supabase/admin";
-import { Database } from "@/types/supabase";
+import { Database } from "../../../types/supabase";
 
 export async function getPortalData(key: string) {
   // Fetch project details using admin client to bypass RLS

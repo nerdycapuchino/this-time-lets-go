@@ -1,9 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { type NextRequest } from 'next/server'
 
-export async function GET(request: NextRequest, { params }: { params: { path: string[] } }) {
-  const supabase = createClient();
-  const filePath = params.path.join('/');
+export async function GET(request: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
+  const supabase = await createClient();
+  const resolvedParams = await params;
+  const filePath = resolvedParams.path.join('/');
 
   const { data, error } = await supabase.storage.from("blueprints").download(filePath);
 

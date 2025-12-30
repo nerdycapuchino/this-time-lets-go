@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
 export async function logHours(employeeId: string, date: string, checkIn: string, checkOut: string) {
-  const supabase = createClient();
+  const supabase = await createClient();
   
   // Calculate total hours
   const start = new Date(`${date}T${checkIn}`);
@@ -25,7 +25,7 @@ export async function logHours(employeeId: string, date: string, checkIn: string
 }
 
 export async function getMonthlyReport(month: number, year: number) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const startDate = new Date(year, month - 1, 1).toISOString();
   const endDate = new Date(year, month, 0).toISOString();
 

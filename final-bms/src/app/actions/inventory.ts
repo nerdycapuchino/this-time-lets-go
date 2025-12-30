@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 
 export async function getInventory() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase.from('inventory').select('*');
 
   if (error) {
@@ -16,7 +16,7 @@ export async function getInventory() {
 }
 
 export async function updateStock(itemId: string, newStockLevel: number) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from('inventory')
     .update({ stock_level: newStockLevel })
@@ -32,7 +32,7 @@ export async function updateStock(itemId: string, newStockLevel: number) {
 }
 
 export async function getProjectBOM(projectId: string) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from('project_materials')
     .select(`

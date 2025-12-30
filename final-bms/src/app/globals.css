@@ -33,7 +33,7 @@ body {
 }
 
 /* Glass & Steel Aesthetic */
-.glass-surface {
+.glass-surface, .glass-card {
   @apply backdrop-blur-xl border;
   background: var(--glass-bg);
   border-color: var(--glass-border);

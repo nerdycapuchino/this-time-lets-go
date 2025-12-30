@@ -4,8 +4,9 @@ import { getPortalData } from '@/app/actions/portal';
 import { format } from 'date-fns';
 import { FileText, CheckCircle2, Clock } from 'lucide-react';
 
-export default async function ProjectSharePage({ params }: { params: { key: string } }) {
-  const { key } = params;
+export default async function ProjectSharePage({ params }: { params: Promise<{ key: string }> }) {
+  const resolvedParams = await params;
+  const { key } = resolvedParams;
 
   const data = await getPortalData(key);
 

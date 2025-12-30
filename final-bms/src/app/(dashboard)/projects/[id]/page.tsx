@@ -5,32 +5,34 @@ import MilestoneManager from "@/components/milestones/MilestoneManager";
 import { UploadZone } from "@/components/revisions/upload-zone";
 import { RevisionList } from "@/components/revisions/revision-list";
 import { getSiteLogs } from "@/app/actions/siteLogs";
-import { SiteLogCapture } from "@/components/site-logs/SiteLogCapture";
+import SiteLogCapture from "@/components/site-logs/SiteLogCaptureWrapper";
 import { SiteLogList } from "@/components/site-logs/SiteLogList";
 import ExpenseLogger from "@/components/finance/ExpenseLogger";
 import { getProjectExpenses } from "@/app/actions/expenses";
 
 type ProjectPageProps = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
-  const supabase = createClient();
+  const resolvedParams = await params;
+  const projectId = resolvedParams.id;
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   const { data: project, error: projectError } = await supabase
     .from("projects")
     .select()
-    .eq("id", params.id)
+    .eq("id", projectId)
     .single();
 
   if (projectError) return <p className="p-4 text-red-500">Error: {projectError.message}</p>;
   if (!project) return <p className="p-4 text-gray-500">Project not found.</p>;
 
   // Data for Task Board Tab
-  const { data: cards, error: cardsError } = await supabase.from("kanban_cards").select(`*, profiles (first_name, last_name)`).eq("project_id", params.id);
+  const { data: cards, error: cardsError } = await supabase.from("kanban_cards").select(`*, profiles (first_name, last_name)`).eq("project_id", projectId);
   const cardIds = cards?.map(c => c.id) || [];
   const { data: timeLogs, error: timeLogsError } = await supabase.from("time_logs").select().in("kanban_card_id", cardIds);
 
@@ -45,16 +47,16 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       file_path,
       profiles (first_name, last_name)
     `)
-    .eq("project_id", params.id)
+    .eq("project_id", projectId)
     .order("file_name", { ascending: true })
     .order("version_number", { ascending: false });
 
   // Data for Site Logs Tab
-  const siteLogs = await getSiteLogs(params.id);
+  const siteLogs = await getSiteLogs(projectId);
 
   // Data for Expenses Tab
-  const expenses = await getProjectExpenses(params.id);
-  const { data: invoices, error: invoicesError } = await supabase.from('invoices').select('amount, status').eq('project_id', params.id);
+  const expenses = await getProjectExpenses(projectId);
+  const { data: invoices, error: invoicesError } = await supabase.from('invoices').select('amount, status').eq('project_id', projectId);
 
   const totalSpent = expenses.reduce((acc, expense) => acc + expense.amount, 0);
   const totalInvoiced = invoices?.filter(inv => inv.status === 'paid').reduce((acc, inv) => acc + inv.amount, 0) || 0;

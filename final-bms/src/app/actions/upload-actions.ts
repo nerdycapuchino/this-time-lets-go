@@ -11,8 +11,7 @@ interface UploadResult {
 }
 
 export async function uploadFileAction(formData: FormData): Promise<UploadResult> {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient();
 
   try {
     // 1. Authenticate user

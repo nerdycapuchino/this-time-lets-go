@@ -4,7 +4,7 @@
 import { createClient } from "@/lib/supabase/server";
 
 export async function calculateMonthlyPayroll(month: number, year: number) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const startDate = new Date(year, month - 1, 1).toISOString();
   const endDate = new Date(year, month, 0).toISOString();
 

@@ -16,7 +16,7 @@ async function streamToBuffer(stream: Readable): Promise<Buffer> {
 }
 
 export async function generateInvoiceForMilestone(milestoneId: number) {
-    const supabase = createClient();
+    const supabase = await createClient();
 
     // 1. Fetch data
     const { data: milestone, error: milestoneError } = await supabase

@@ -9,7 +9,7 @@ export async function uploadBlueprint(
   prevState: { message: string },
   formData: FormData
 ) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { message: "Authentication required." };
@@ -74,7 +74,7 @@ export async function uploadBlueprint(
 }
 
 export async function getMarkupComments(revisionId: number) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("drawing_markups")
     .select()
@@ -91,7 +91,7 @@ export async function addMarkupComment(
   revisionId: number,
   commentData: { x: number; y: number; text: string }
 ) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: "Authentication required." };
   
@@ -111,7 +111,7 @@ export async function addMarkupComment(
   }
 
   // Find project id for revalidation
-  const { data: revision } = await supabase.from('drawing_revisions').select('project_milestones(projects(id))').eq('id', revisionId).single();
+  const { data: revision } = await supabase.from('drawing_revisions').select('project_milestones(projects(id))').eq('id', revisionId).single() as any;
   const projectId = revision?.project_milestones?.projects?.id;
   if(projectId) {
     revalidatePath(`/dashboard/projects/${projectId}`);
