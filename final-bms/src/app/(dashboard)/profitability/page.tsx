@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import ProfitabilityDashboard from "@/components/profitability/ProfitabilityDashboard";
 
 export default async function ProfitabilityPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data, error } = await supabase.rpc('get_profitability_data');
 
