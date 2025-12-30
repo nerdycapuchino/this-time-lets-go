@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
-import { Home, Folder, Users, DollarSign, ClipboardList, TrendingUp, UsersRound } from 'lucide-react';
+import { Home, Folder, Users, DollarSign, ClipboardList, TrendingUp, UsersRound, Network } from 'lucide-react';
 import Link from 'next/link';
 
 const Sidebar = async () => {
@@ -19,6 +19,7 @@ const Sidebar = async () => {
   }
 
   const isFieldStaff = userRole === 'Field-Staff';
+  const isManager = userRole === 'admin' || userRole === 'factory_mgr';
 
   return (
     <div className="w-64 bg-white shadow-md h-full p-4 flex flex-col">
@@ -47,6 +48,14 @@ const Sidebar = async () => {
               Projects
             </Link>
           </li>
+           {isManager && (
+            <li className="mb-4">
+              <Link href="/dashboard/sales/pipeline" className="flex items-center text-gray-700 hover:text-black">
+                <Network className="mr-2 h-5 w-5" />
+                Sales Pipeline
+              </Link>
+            </li>
+           )}
           <li className="mb-4">
             <Link href="/dashboard/site-logs" className="flex items-center text-gray-700 hover:text-black">
               <ClipboardList className="mr-2 h-5 w-5" />
