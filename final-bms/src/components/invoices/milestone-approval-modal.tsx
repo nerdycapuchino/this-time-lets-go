@@ -57,52 +57,52 @@ export function MilestoneApprovalModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl animate-in fade-in zoom-in duration-200">
-        <div className="flex justify-between items-start mb-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-md">
+      <div className="w-full max-w-md glass-surface rounded-3xl p-8 shadow-2xl animate-in fade-in zoom-in duration-300">
+        <div className="flex justify-between items-start mb-8">
           <div>
-            <h2 className="text-xl font-bold text-gray-900">Milestone Completed</h2>
-            <p className="text-sm text-gray-500">{projectName}</p>
+            <h2 className="text-2xl font-black tracking-tighter text-gray-900 dark:text-white uppercase">Milestone Approval</h2>
+            <p className="architectural-heading mt-1">{projectName}</p>
           </div>
-          <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded-full"><X className="h-5 w-5 text-gray-400" /></button>
+          <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-xl transition-colors"><X className="h-5 w-5 text-gray-400" /></button>
         </div>
 
-        <div className="mb-6 rounded-xl bg-slate-50 p-4 border border-slate-200">
-          <div className="flex justify-between items-center mb-1">
-            <span className="text-sm text-slate-600">{milestone.name}</span>
-            <span className="text-lg font-bold text-slate-900">
+        <div className="mb-8 rounded-2xl bg-white/5 p-6 border border-white/5 neu-shadow">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-xs font-black uppercase tracking-widest text-gray-400">{milestone.name}</span>
+            <span className="text-xl font-black text-blue-600 dark:text-blue-400">
               ₹{new Intl.NumberFormat('en-IN').format(milestone.amount)}
             </span>
           </div>
-          <p className="text-xs text-slate-500 italic">Ready to generate professional GST-ready invoice.</p>
+          <p className="text-[10px] text-gray-500 font-bold uppercase tracking-tight">GST-READY INVOICE CALCULATION</p>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-4">
           {status === 'idle' && (
             <button
               onClick={handleGenerateInvoice}
-              className="w-full flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white hover:bg-blue-700 transition-all"
+              className="shimmer-button w-full flex items-center justify-center gap-3 rounded-2xl bg-blue-600 px-6 py-4 text-xs font-black text-white hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20 uppercase tracking-widest"
             >
-              <FileText className="h-5 w-5" /> Generate & Log Invoice
+              <FileText className="h-4 w-4" /> Finalize & Log Invoice
             </button>
           )}
 
           {status === 'generating' && (
-            <button disabled className="w-full flex items-center justify-center gap-2 rounded-lg bg-slate-100 px-4 py-3 font-medium text-slate-400">
-              <Loader2 className="h-5 w-5 animate-spin" /> Processing...
+            <button disabled className="w-full flex items-center justify-center gap-3 rounded-2xl bg-white/5 px-6 py-4 text-xs font-black text-gray-500 uppercase tracking-widest border border-white/5">
+              <Loader2 className="h-4 w-4 animate-spin" /> Transmitting...
             </button>
           )}
 
           {status === 'success' && (
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 text-green-600 justify-center font-semibold p-2 bg-green-50 rounded-lg">
-                <CheckCircle className="h-5 w-5" /> Invoice Generated!
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 text-green-500 justify-center text-xs font-black p-4 bg-green-500/10 rounded-2xl border border-green-500/20 uppercase tracking-widest">
+                <CheckCircle className="h-4 w-4" /> Transaction Logged
               </div>
               <button
                 onClick={handleDownloadPDF}
-                className="w-full flex items-center justify-center gap-2 rounded-lg bg-slate-900 px-4 py-3 font-semibold text-white hover:bg-slate-800"
+                className="shimmer-button w-full flex items-center justify-center gap-3 rounded-2xl bg-gray-900 dark:bg-white px-6 py-4 text-xs font-black text-white dark:text-black hover:opacity-90 transition-all uppercase tracking-widest"
               >
-                Download PDF Invoice
+                Archive PDF Document
               </button>
             </div>
           )}

@@ -37,11 +37,11 @@ export default function ExpenseLogger({ projectId }: { projectId: string }) {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow">
-      <h3 className="text-lg font-semibold mb-4">Log New Expense</h3>
-      <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
+    <div className="glass-surface p-8 rounded-3xl shadow-xl">
+      <h3 className="text-xl font-black tracking-tight text-gray-900 dark:text-white mb-6 uppercase">Log New Expense</h3>
+      <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="description" className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">
             Description
           </label>
           <input
@@ -49,40 +49,42 @@ export default function ExpenseLogger({ projectId }: { projectId: string }) {
             name="description"
             id="description"
             required
-            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all text-sm"
           />
         </div>
-        <div>
-          <label htmlFor="category" className="block text-sm font-medium text-gray-700">
-            Category
-          </label>
-          <select
-            name="category"
-            id="category"
-            required
-            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          >
-            <option>Materials</option>
-            <option>Labor</option>
-            <option>Marketing</option>
-            <option>Other</option>
-          </select>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label htmlFor="category" className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">
+              Category
+            </label>
+            <select
+              name="category"
+              id="category"
+              required
+              className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all text-sm appearance-none"
+            >
+              <option>Materials</option>
+              <option>Labor</option>
+              <option>Marketing</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="amount" className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">
+              Amount
+            </label>
+            <input
+              type="number"
+              name="amount"
+              id="amount"
+              step="0.01"
+              required
+              className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all text-sm font-bold"
+            />
+          </div>
         </div>
         <div>
-          <label htmlFor="amount" className="block text-sm font-medium text-gray-700">
-            Amount
-          </label>
-          <input
-            type="number"
-            name="amount"
-            id="amount"
-            step="0.01"
-            required
-            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div>
-          <label htmlFor="date" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="date" className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">
             Date
           </label>
           <input
@@ -91,20 +93,20 @@ export default function ExpenseLogger({ projectId }: { projectId: string }) {
             id="date"
             required
             defaultValue={new Date().toISOString().split('T')[0]}
-            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all text-sm"
           />
         </div>
         <div>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-300"
+            className="shimmer-button w-full py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl text-xs font-black uppercase tracking-widest shadow-lg shadow-blue-500/20 disabled:bg-gray-400 transition-all"
           >
-            {isSubmitting ? 'Logging...' : 'Log Expense'}
+            {isSubmitting ? 'Processing...' : 'Log Expense'}
           </button>
         </div>
-        {error && <p className="text-sm text-red-500">{error}</p>}
-        {success && <p className="text-sm text-green-500">{success}</p>}
+        {error && <p className="text-xs font-bold text-red-500 text-center uppercase tracking-widest bg-red-500/10 py-3 rounded-xl">{error}</p>}
+        {success && <p className="text-xs font-bold text-green-500 text-center uppercase tracking-widest bg-green-500/10 py-3 rounded-xl">{success}</p>}
       </form>
     </div>
   );
