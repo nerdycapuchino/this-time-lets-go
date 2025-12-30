@@ -20,43 +20,45 @@ export default function BlueprintUploader({ projectId }: { projectId: string }) 
   }, [state]);
 
   return (
-    <div className="bg-white p-6 rounded-md shadow-md mt-6">
-      <h2 className="text-xl font-bold mb-4">Upload New Blueprint</h2>
-      <form action={formAction}>
-        <div className="mb-4">
-          <label htmlFor="file" className="block text-sm font-medium text-gray-700">
-            Blueprint File (.dwg, .rvt, .pdf)
+    <div className="glass-surface p-8 rounded-3xl shadow-xl">
+      <h2 className="text-xl font-black tracking-tighter text-gray-900 dark:text-white mb-8 uppercase">Upload New Asset</h2>
+      <form action={formAction} className="space-y-8">
+        <div>
+          <label htmlFor="file" className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-3">
+            Source File (.dwg, .rvt, .pdf)
           </label>
-          <input
-            type="file"
-            id="file"
-            name="file"
-            className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-black hover:file:bg-gray-200"
-            required
-          />
+          <div className="relative">
+            <input
+              type="file"
+              id="file"
+              name="file"
+              className="block w-full text-xs text-gray-500 file:mr-6 file:py-3 file:px-6 file:rounded-2xl file:border-0 file:text-[10px] file:font-black file:uppercase file:tracking-widest file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-all cursor-pointer"
+              required
+            />
+          </div>
         </div>
-        <div className="mb-4">
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-            Version Description
+        <div>
+          <label htmlFor="description" className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-3">
+            Revision Metadata
           </label>
           <input
             type="text"
             id="description"
             name="description"
-            placeholder="e.g., 'Initial client proposal'"
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black sm:text-sm"
+            placeholder="e.g., 'Structural optimization V2'"
+            className="w-full px-4 py-4 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all text-sm font-medium"
             required
           />
         </div>
         {/* In a real app, we'd have a dropdown to select the milestone */}
         <input type="hidden" name="milestone_id" value="1" />
-        <div>
+        <div className="pt-2">
           <button
             type="submit"
-            className="inline-flex items-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800"
+            className="shimmer-button inline-flex items-center justify-center w-full md:w-auto py-4 px-10 bg-gray-900 dark:bg-white text-white dark:text-black rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-xl"
           >
-            <Upload className="mr-2 h-4 w-4" />
-            Upload
+            <Upload className="mr-3 h-4 w-4" />
+            INITIATE UPLOAD
           </button>
         </div>
       </form>
