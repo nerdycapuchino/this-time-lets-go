@@ -3,7 +3,7 @@ import { Plus, MessageSquare, Camera } from "lucide-react";
 import Link from "next/link";
 
 export default async function SiteLogsPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: logs, error } = await supabase
     .from("site_logs")
     .select(`
