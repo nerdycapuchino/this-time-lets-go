@@ -7,47 +7,52 @@ export default async function ProjectsPage() {
   const { data: projects, error } = await supabase.from("projects").select();
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Projects</h1>
+    <div className="space-y-8">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-4xl font-black tracking-tighter text-gray-900 dark:text-white">PROJECTS</h1>
+          <p className="text-gray-500 text-sm font-medium mt-1">Manage and track your active workspace</p>
+        </div>
         <Link
           href="/dashboard/projects/new"
-          className="bg-black text-white px-4 py-2 rounded-md flex items-center"
+          className="shimmer-button bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-2xl flex items-center font-bold shadow-lg shadow-blue-500/20"
         >
-          <Plus className="mr-2" />
-          New Project
+          <Plus className="mr-2 h-5 w-5" />
+          NEW PROJECT
         </Link>
       </div>
-      <div className="bg-white rounded-md shadow-md">
-        <ul className="divide-y divide-gray-200">
+      
+      <div className="glass-surface rounded-3xl overflow-hidden">
+        <ul className="divide-y divide-white/5">
           {projects && projects.length > 0 ? (
             projects.map((project) => (
               <li key={project.id}>
                 <Link
                   href={`/dashboard/projects/${project.id}`}
-                  className="block p-4 hover:bg-gray-50"
+                  className="block p-6 hover:bg-white/5 transition-colors group"
                 >
-                  <p className="font-semibold">{project.name}</p>
-                  <p className="text-sm text-gray-500">{project.description}</p>
-                  <p className="text-sm text-gray-500 capitalize mt-2">
-                    Status:{" "}
-                    <span className="font-medium text-black">
-                      {project.status}
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-500 transition-colors">{project.name}</p>
+                      <p className="text-sm text-gray-500 mt-1 max-w-2xl">{project.description}</p>
+                    </div>
+                    <span className="px-3 py-1 bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-400 rounded-full text-[10px] font-bold uppercase tracking-widest">
+                      {project.status.replace('_', ' ')}
                     </span>
-                  </p>
+                  </div>
                 </Link>
               </li>
             ))
           ) : (
-            <li className="p-4 text-center text-gray-500">
-              No projects found.
+            <li className="p-12 text-center text-gray-500 italic">
+              No projects found in the current workspace.
             </li>
           )}
         </ul>
         {error && (
-          <p className="p-4 text-red-500">
-            Error fetching projects: {error.message}
-          </p>
+          <div className="p-6 bg-red-500/10 text-red-500 text-sm font-bold">
+            ERROR: {error.message}
+          </div>
         )}
       </div>
     </div>

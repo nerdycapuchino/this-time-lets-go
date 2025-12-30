@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
-import { Home, Folder, Users, DollarSign, ClipboardList, TrendingUp, UsersRound, Network } from 'lucide-react';
+import { Home, Folder, Users, DollarSign, ClipboardList, TrendingUp, UsersRound, Network, Warehouse } from 'lucide-react';
 import Link from 'next/link';
 
 const Sidebar = async () => {
@@ -19,67 +19,92 @@ const Sidebar = async () => {
   }
 
   const isFieldStaff = userRole === 'Field-Staff';
-  const isManager = userRole === 'admin' || userRole === 'factory_mgr';
+  const isManager = userRole === 'admin' || userRole === 'manager';
+  const canSeeInventory = userRole === 'admin' || userRole === 'factory_mgr';
 
   return (
-    <div className="w-64 bg-white shadow-md h-full p-4 flex flex-col">
-      <div className="mb-10">
-        <Link href="/dashboard" className="text-2xl font-bold">
-          StudioBMS
+    <div className="w-64 glass-surface m-4 rounded-3xl h-[calc(100vh-2rem)] p-6 flex flex-col fixed left-0 top-0 z-50">
+      <div className="mb-12">
+        <Link href="/dashboard" className="text-2xl font-black tracking-tighter text-blue-600 dark:text-blue-400">
+          STUDIO<span className="text-gray-900 dark:text-white">BMS</span>
         </Link>
       </div>
-      <nav>
-        <ul>
-          <li className="mb-4">
-            <Link href="/dashboard" className="flex items-center text-gray-700 hover:text-black">
-              <Home className="mr-2 h-5 w-5" />
-              Dashboard
+      <nav className="flex-1">
+        <ul className="space-y-2">
+          <li>
+            <Link href="/dashboard" className="flex items-center px-4 py-3 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-white/10 hover:text-blue-600 transition-all group">
+              <Home className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform" />
+              <span className="font-medium">Dashboard</span>
             </Link>
           </li>
-          <li className="mb-4">
-            <Link href="/dashboard/team" className="flex items-center text-gray-700 hover:text-black">
-              <UsersRound className="mr-2 h-5 w-5" />
-              Team Hub
+          <li>
+            <Link href="/dashboard/team" className="flex items-center px-4 py-3 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-white/10 hover:text-blue-600 transition-all group">
+              <UsersRound className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform" />
+              <span className="font-medium">Team Hub</span>
             </Link>
           </li>
-          <li className="mb-4">
-            <Link href="/dashboard/projects" className="flex items-center text-gray-700 hover:text-black">
-              <Folder className="mr-2 h-5 w-5" />
-              Projects
+          <li>
+            <Link href="/dashboard/projects" className="flex items-center px-4 py-3 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-white/10 hover:text-blue-600 transition-all group">
+              <Folder className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform" />
+              <span className="font-medium">Projects</span>
             </Link>
           </li>
            {isManager && (
-            <li className="mb-4">
-              <Link href="/dashboard/sales/pipeline" className="flex items-center text-gray-700 hover:text-black">
-                <Network className="mr-2 h-5 w-5" />
-                Sales Pipeline
+            <li>
+              <Link href="/dashboard/sales/pipeline" className="flex items-center px-4 py-3 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-white/10 hover:text-blue-600 transition-all group">
+                <Network className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform" />
+                <span className="font-medium">Sales Pipeline</span>
               </Link>
             </li>
            )}
-          <li className="mb-4">
-            <Link href="/dashboard/site-logs" className="flex items-center text-gray-700 hover:text-black">
-              <ClipboardList className="mr-2 h-5 w-5" />
-              Site Logs
+          {canSeeInventory && (
+            <li>
+              <Link href="/dashboard/inventory" className="flex items-center px-4 py-3 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-white/10 hover:text-blue-600 transition-all group">
+                <Warehouse className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform" />
+                <span className="font-medium">Inventory</span>
+              </Link>
+            </li>
+          )}
+          <li>
+            <Link href="/dashboard/site-logs" className="flex items-center px-4 py-3 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-white/10 hover:text-blue-600 transition-all group">
+              <ClipboardList className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform" />
+              <span className="font-medium">Site Logs</span>
             </Link>
           </li>
           {!isFieldStaff && (
             <>
-              <li className="mb-4">
-                <Link href="/dashboard/marketing" className="flex items-center text-gray-700 hover:text-black">
-                  <TrendingUp className="mr-2 h-5 w-5" />
-                  Marketing ROI
+              <li>
+                <Link href="/dashboard/marketing" className="flex items-center px-4 py-3 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-white/10 hover:text-blue-600 transition-all group">
+                  <TrendingUp className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform" />
+                  <span className="font-medium">Marketing ROI</span>
                 </Link>
               </li>
-              <li className="mb-4">
-                <Link href="/dashboard/profitability" className="flex items-center text-gray-700 hover:text-black">
-                  <DollarSign className="mr-2 h-5 w-5" />
-                  Profitability
+              <li>
+                <Link href="/dashboard/profitability" className="flex items-center px-4 py-3 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-white/10 hover:text-blue-600 transition-all group">
+                  <DollarSign className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform" />
+                  <span className="font-medium">Profitability</span>
                 </Link>
               </li>
+              {userRole === 'admin' && (
+                <li>
+                  <Link href="/dashboard/finance/payroll" className="flex items-center px-4 py-3 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-white/10 hover:text-blue-600 transition-all group">
+                    <DollarSign className="mr-3 h-5 w-5 text-green-600" />
+                    <span className="font-medium">Payroll</span>
+                  </Link>
+                </li>
+              )}
             </>
           )}
         </ul>
       </nav>
+      <div className="pt-4 border-t border-white/10">
+        <div className="px-4 py-2 text-xs architectural-heading">
+          Connected as
+        </div>
+        <div className="px-4 py-1 text-sm font-bold truncate">
+          {userRole.toUpperCase()}
+        </div>
+      </div>
     </div>
   );
 };

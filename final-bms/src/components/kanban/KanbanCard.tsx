@@ -44,32 +44,31 @@ export default function KanbanCard({ card, index, timeLogs, currentUserId }: Kan
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={`bg-white rounded-md shadow-sm p-4 mb-4 ${
-            snapshot.isDragging ? "ring-2 ring-black" : ""
+          className={`bg-white dark:bg-zinc-900 rounded-2xl neu-shadow p-5 mb-4 border border-white/10 dark:border-white/5 transition-all ${
+            snapshot.isDragging ? "scale-105 rotate-2 z-50 shadow-2xl" : ""
           }`}
         >
-          <p className="font-semibold">{card.title}</p>
-          <div className="flex items-center text-xs text-gray-500 mt-2">
-            <User className="w-4 h-4 mr-1" />
-            <span>{card.profiles?.first_name} {card.profiles?.last_name}</span>
-          </div>
-
-          <div className="mt-4 pt-4 border-t">
-            <div className="flex justify-between items-center text-sm">
-                <div className="flex items-center text-gray-600">
-                    <Timer className="w-4 h-4 mr-1" />
-                    <span>{totalDuration} min</span>
-                </div>
-                {isTimingByCurrentUser ? (
-                    <button onClick={handleStopTimer} className="bg-red-500 text-white text-xs px-2 py-1 rounded">Stop</button>
-                ) : activeLog ? (
-                    <div className="text-xs text-yellow-600">Timing...</div>
-                ) : (
-                    <button onClick={handleStartTimer} className="bg-gray-200 text-xs px-2 py-1 rounded">Start</button>
-                )}
+          <p className="font-bold text-gray-900 dark:text-white mb-2">{card.title}</p>
+          <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-4">
+            <div className="w-6 h-6 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mr-2">
+              <User className="w-3 h-3 text-blue-600" />
             </div>
+            <span className="font-medium">{card.profiles?.first_name} {card.profiles?.last_name}</span>
           </div>
 
+          <div className="pt-4 border-t border-gray-50 dark:border-white/5 flex justify-between items-center text-xs">
+            <div className="flex items-center text-gray-500 font-medium">
+                <Timer className="w-4 h-4 mr-1.5 text-blue-500" />
+                <span>{totalDuration} min</span>
+            </div>
+            {isTimingByCurrentUser ? (
+                <button onClick={handleStopTimer} className="shimmer-button bg-red-500 hover:bg-red-600 text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">Stop</button>
+            ) : activeLog ? (
+                <div className="px-3 py-1.5 bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-500 rounded-full font-bold text-[10px] uppercase tracking-wider">In Progress</div>
+            ) : (
+                <button onClick={handleStartTimer} className="shimmer-button bg-gray-100 dark:bg-white/5 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-white/10 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">Start</button>
+            )}
+          </div>
         </div>
       )}
     </Draggable>
