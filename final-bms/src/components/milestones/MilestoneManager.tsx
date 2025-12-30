@@ -5,8 +5,8 @@ type MilestoneManagerProps = {
   projectId: number;
 };
 
-export default async function MilestoneManager({ projectId }: MilestoneManagerProps) {
-  const supabase = createClient();
+export default async function MilestoneManager({ projectId }: { projectId: number }) {
+  const supabase = await createClient();
   
   const { data: milestones, error } = await supabase
     .from("project_milestones")
