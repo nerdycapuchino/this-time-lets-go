@@ -2,7 +2,7 @@ import SiteLogForm from "@/components/site-logs/SiteLogForm";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function NewSiteLogPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: projects } = await supabase.from("projects").select("id, name");
 
   return (
