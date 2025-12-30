@@ -7,6 +7,8 @@ import { RevisionList } from "@/components/revisions/revision-list";
 import { getSiteLogs } from "@/app/actions/siteLogs";
 import { SiteLogCapture } from "@/components/site-logs/SiteLogCapture";
 import { SiteLogList } from "@/components/site-logs/SiteLogList";
+import ExpenseLogger from "@/components/finance/ExpenseLogger";
+import { getProjectExpenses } from "@/app/actions/expenses";
 
 type ProjectPageProps = {
   params: {
@@ -49,7 +51,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   // Data for Site Logs Tab
   const siteLogs = await getSiteLogs(params.id);
-  
+
+  // Data for Expenses Tab
+  const expenses = await getProjectExpenses(params.id);
+  const { data: invoices, error: invoicesError } = await supabase.from('invoices').select('amount, status').eq('project_id', params.id);
+
+  const totalSpent = expenses.reduce((acc, expense) => acc + expense.amount, 0);
+  const totalInvoiced = invoices?.filter(inv => inv.status === 'paid').reduce((acc, inv) => acc + inv.amount, 0) || 0;
+
   const tabs = [
     {
         name: "Task Board",
@@ -93,6 +102,36 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 </div>
             </div>
         )
+    },
+    {
+      name: "Expenses",
+      content: (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="md:col-span-2">
+            <h2 className="text-xl font-semibold mb-4">Expense History</h2>
+            <div className="bg-white p-4 rounded-lg shadow">
+              <ul>
+                {expenses.map(expense => (
+                  <li key={expense.id} className="flex justify-between items-center border-b last:border-b-0 py-2">
+                    <div>
+                      <p className="font-medium">{expense.description}</p>
+                      <p className="text-sm text-gray-500">{expense.category} - {new Date(expense.date).toLocaleDateString()}</p>
+                    </div>
+                    <p className="font-bold">₹{expense.amount.toLocaleString('en-IN')}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="mt-4 flex justify-between font-bold text-lg">
+                <span>Total Spent: ₹{totalSpent.toLocaleString('en-IN')}</span>
+                <span>Total Invoiced (Paid): ₹{totalInvoiced.toLocaleString('en-IN')}</span>
+            </div>
+          </div>
+          <div>
+            <ExpenseLogger projectId={project.id} />
+          </div>
+        </div>
+      )
     },
     {
         name: "Milestones & Invoicing",
