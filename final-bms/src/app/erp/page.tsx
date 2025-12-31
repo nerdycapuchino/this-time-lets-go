@@ -1,4 +1,0 @@
-import { redirect } from 'next/navigation'
-export default function ErpPage() {
-  redirect('/dashboard/erp')
-}
