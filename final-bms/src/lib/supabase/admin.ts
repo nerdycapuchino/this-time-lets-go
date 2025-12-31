@@ -6,22 +6,29 @@ import { createClient } from '@supabase/supabase-js';
 
 // Ensure that the service role key is stored securely in your environment variables
 // and is not the same as the public anon key.
-if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-  throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set in the environment variables.');
-}
-if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-  throw new Error('NEXT_PUBLIC_SUPABASE_URL is not set in the environment variables.');
-}
+let _supabaseAdmin: any = null;
 
-export const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY,
-  {
-    auth: {
-      // It's recommended to auto-refresh the token on the admin client
-      autoRefreshToken: true,
-      // It's recommended to persist the session on the admin client
-      persistSession: false,
-    },
+export const getSupabaseAdmin = () => {
+  if (_supabaseAdmin) return _supabaseAdmin;
+
+  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set in the environment variables.');
+    }
+    // Return a dummy client during build if variables are missing
+    return {} as any;
   }
-);
+
+  _supabaseAdmin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    {
+      auth: {
+        autoRefreshToken: true,
+        persistSession: false,
+      },
+    }
+  );
+  
+  return _supabaseAdmin;
+};

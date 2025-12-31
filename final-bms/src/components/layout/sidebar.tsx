@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
-import { Home, Folder, Users, DollarSign, ClipboardList, TrendingUp, UsersRound, Network, Warehouse } from 'lucide-react';
+import { Home, Folder, Users, DollarSign, ClipboardList, TrendingUp, UsersRound, Network, Warehouse, Hammer } from 'lucide-react';
 import Link from 'next/link';
 
 const Sidebar = async () => {
@@ -44,6 +44,12 @@ const Sidebar = async () => {
             </Link>
           </li>
           <li>
+            <Link href="/dashboard/leads" className="flex items-center px-4 py-3 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-white/10 hover:text-blue-600 transition-all group">
+              <Users className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform" />
+              <span className="font-medium">Leads Dashboard</span>
+            </Link>
+          </li>
+          <li>
             <Link href="/dashboard/projects" className="flex items-center px-4 py-3 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-white/10 hover:text-blue-600 transition-all group">
               <Folder className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform" />
               <span className="font-medium">Projects</span>
@@ -58,12 +64,20 @@ const Sidebar = async () => {
             </li>
            )}
           {canSeeInventory && (
-            <li>
-              <Link href="/dashboard/inventory" className="flex items-center px-4 py-3 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-white/10 hover:text-blue-600 transition-all group">
-                <Warehouse className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform" />
-                <span className="font-medium">Inventory</span>
-              </Link>
-            </li>
+            <>
+              <li>
+                <Link href="/dashboard/inventory" className="flex items-center px-4 py-3 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-white/10 hover:text-blue-600 transition-all group">
+                  <Warehouse className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform" />
+                  <span className="font-medium">Inventory</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/dashboard/manufacturing" className="flex items-center px-4 py-3 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-white/10 hover:text-blue-600 transition-all group">
+                  <Hammer className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform" />
+                  <span className="font-medium">Manufacturing Hub</span>
+                </Link>
+              </li>
+            </>
           )}
           <li>
             <Link href="/dashboard/site-logs" className="flex items-center px-4 py-3 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-white/10 hover:text-blue-600 transition-all group">

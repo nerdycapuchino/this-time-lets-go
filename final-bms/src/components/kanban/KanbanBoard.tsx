@@ -100,7 +100,7 @@ export default function KanbanBoard({ initialCards, timeLogs, currentUserId }: K
         isOpen={isModalOpen}
         onClose={handleModalClose as any}
         milestone={{
-          id: selectedMilestone.id.toString(),
+          id: selectedMilestone.id,
           name: selectedMilestone.title,
           amount: selectedMilestone.amount || 0,
         }}

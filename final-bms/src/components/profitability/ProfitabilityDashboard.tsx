@@ -59,8 +59,9 @@ export default function ProfitabilityDashboard({ projectsData, monthlyData, exch
     return projectsData.flatMap(p => 
       p.kanban_cards.map(card => {
         const consumed_hours = card.time_logs.reduce((sum, log) => sum + ((log.duration_minutes || 0) / 60), 0);
-        const burn = (card.budgeted_hours || 0) > 0 ? (consumed_hours / card.budgeted_hours) * 100 : 0;
-        return { projectId: p.id, projectName: p.name, taskId: card.id, taskTitle: card.title, budgeted_hours: card.budgeted_hours || 0, consumed_hours, burn };
+        const budgeted = card.budgeted_hours || 0;
+        const burn = budgeted > 0 ? (consumed_hours / budgeted) * 100 : 0;
+        return { projectId: p.id, projectName: p.name, taskId: card.id, taskTitle: card.title, budgeted_hours: budgeted, consumed_hours, burn };
       })
     ).filter(t => t.budgeted_hours > 0);
   }, [projectsData]);

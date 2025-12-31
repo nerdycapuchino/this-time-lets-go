@@ -1,8 +1,23 @@
 // src/app/(dashboard)/finance/payroll/page.tsx
 import { calculateMonthlyPayroll } from "@/app/actions/payroll";
 import { format } from "date-fns";
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 
 export default async function PayrollPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) redirect('/login');
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single();
+
+  if (profile?.role !== 'admin') redirect('/dashboard');
+
   const now = new Date();
   const month = now.getMonth() + 1;
   const year = now.getFullYear();

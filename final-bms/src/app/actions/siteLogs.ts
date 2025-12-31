@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { decode } from 'base64-arraybuffer'
 
-export async function createSiteLog(formData: FormData) {
+export async function createSiteLog(prevState: any, formData: FormData) {
   const supabase = await createClient()
 
   const projectId = formData.get('projectId') as string

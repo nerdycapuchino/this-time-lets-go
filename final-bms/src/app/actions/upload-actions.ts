@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
-import { supabaseAdmin } from '@/lib/supabase/admin';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { PROJECT_ASSETS_BUCKET, initializeProjectAssetsBucket } from '@/lib/supabase/storage';
 
 interface UploadResult {
@@ -45,7 +45,7 @@ export async function uploadFileAction(formData: FormData): Promise<UploadResult
     const { organization_id } = profile;
 
     // Use the admin client for elevated-privilege operations
-    const adminClient = supabaseAdmin;
+    const adminClient = getSupabaseAdmin();
 
     // 3. Ensure storage bucket exists (idempotent call)
     await initializeProjectAssetsBucket(adminClient);

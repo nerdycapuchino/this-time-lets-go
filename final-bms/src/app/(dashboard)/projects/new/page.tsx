@@ -16,42 +16,50 @@ export default function NewProjectPage() {
   }, [state]);
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">New Project</h1>
-      <form action={formAction} className="bg-white p-6 rounded-md shadow-md max-w-lg">
-        <div className="mb-4">
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-            Project Name
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-4xl font-black tracking-tighter text-gray-900 dark:text-white uppercase">Initialize Project</h1>
+        <p className="text-gray-500 text-sm font-medium mt-1">Configure a new architectural workspace</p>
+      </div>
+
+      <form action={formAction} className="glass-card p-8 rounded-3xl shadow-xl max-w-2xl">
+        <div className="mb-6">
+          <label htmlFor="name" className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">
+            Project Title
           </label>
           <input
             type="text"
             id="name"
             name="name"
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black sm:text-sm"
+            placeholder="e.g., Sky-High Residency"
+            className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all text-sm font-bold"
             required
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-            Description
+        <div className="mb-8">
+          <label htmlFor="description" className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">
+            Brief / Objectives
           </label>
           <textarea
             id="description"
             name="description"
             rows={4}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black sm:text-sm"
+            placeholder="Outline the scope and key deliverables..."
+            className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all text-sm font-medium"
           />
         </div>
         <div>
           <button
             type="submit"
-            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+            className="shimmer-button w-full md:w-auto px-10 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-500/20 transition-all"
           >
-            Create Project
+            Deploy Project Hub
           </button>
         </div>
         {state.message && state.message !== "success" && (
-          <p className="mt-4 text-red-500">{state.message}</p>
+          <p className="mt-6 text-xs font-bold text-red-500 uppercase tracking-widest bg-red-500/10 py-3 rounded-xl text-center">
+            {state.message}
+          </p>
         )}
       </form>
     </div>

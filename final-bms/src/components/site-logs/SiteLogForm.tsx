@@ -11,13 +11,13 @@ type Project = {
 };
 
 export default function SiteLogForm({ projects }: { projects: Project[] }) {
-  const initialState = { message: "" };
-  const [state, formAction] = useFormState(createSiteLog, initialState);
+  const initialState = { success: false, error: "" };
+  const [state, formAction] = useFormState(createSiteLog, initialState as any);
   const [isRecording, setIsRecording] = useState(false);
   const [notes, setNotes] = useState("");
 
   const handleVoiceRecognition = () => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognition) {
       alert("Speech recognition is not supported in this browser.");
       return;
@@ -30,7 +30,7 @@ export default function SiteLogForm({ projects }: { projects: Project[] }) {
     recognition.onstart = () => setIsRecording(true);
     recognition.onend = () => setIsRecording(false);
     
-    recognition.onresult = (event) => {
+    recognition.onresult = (event: any) => {
       let interimTranscript = "";
       let finalTranscript = "";
       for (let i = 0; i < event.results.length; ++i) {
@@ -51,24 +51,25 @@ export default function SiteLogForm({ projects }: { projects: Project[] }) {
   };
 
   useEffect(() => {
-    if (state.message === "success") {
+    if (state?.success) {
       alert("Site log created!");
-      window.location.href = "/dashboard/site-logs"; // Redirect after success
-    } else if (state.message) {
-      alert(`Error: ${state.message}`);
+      window.location.href = "/dashboard/site-logs";
+    } else if (state?.error) {
+      alert(`Error: ${state.error}`);
     }
   }, [state]);
 
   return (
-    <form action={formAction} className="bg-white p-6 rounded-md shadow-md max-w-lg mx-auto">
-      <div className="mb-4">
-        <label htmlFor="project_id" className="block text-sm font-medium text-gray-700">
-          Project
+    <form action={formAction} className="glass-surface p-8 rounded-3xl shadow-xl max-w-lg mx-auto">
+      <h2 className="text-2xl font-black tracking-tighter text-gray-900 dark:text-white mb-8 uppercase">Direct Entry</h2>
+      <div className="mb-6">
+        <label htmlFor="project_id" className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">
+          Select Project
         </label>
         <select
           id="project_id"
           name="project_id"
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+          className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all text-sm"
           required
         >
           {projects.map((p) => (
@@ -77,9 +78,9 @@ export default function SiteLogForm({ projects }: { projects: Project[] }) {
         </select>
       </div>
 
-      <div className="mb-4">
-        <label htmlFor="notes" className="block text-sm font-medium text-gray-700">
-          Notes
+      <div className="mb-6">
+        <label htmlFor="notes" className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">
+          Notes / Transcriptions
         </label>
         <div className="relative">
           <textarea
@@ -88,33 +89,34 @@ export default function SiteLogForm({ projects }: { projects: Project[] }) {
             rows={6}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+            className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all text-sm"
+            placeholder="Describe site conditions..."
           />
           <button
             type="button"
             onClick={handleVoiceRecognition}
-            className={`absolute bottom-3 right-3 p-2 rounded-full ${isRecording ? 'bg-red-500 text-white' : 'bg-gray-200'}`}
+            className={`absolute bottom-4 right-4 p-3 rounded-2xl transition-all ${isRecording ? 'bg-red-500 text-white animate-pulse' : 'bg-gray-100 dark:bg-white/5 text-gray-500'}`}
           >
             <Mic size={20} />
           </button>
         </div>
       </div>
 
-      <div className="mb-6">
-        <label htmlFor="photos" className="block text-sm font-medium text-gray-700">
-          Photos
+      <div className="mb-8">
+        <label htmlFor="photos" className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">
+          Evidence Capture
         </label>
-        <div className="mt-1 flex items-center justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+        <div className="mt-1 flex items-center justify-center px-6 pt-5 pb-6 border-2 border-gray-200 dark:border-white/10 border-dashed rounded-3xl hover:bg-white/5 transition-colors">
             <div className="space-y-1 text-center">
-                <Camera className="mx-auto h-12 w-12 text-gray-400" />
+                <Camera className="mx-auto h-10 w-10 text-gray-400" />
                 <div className="flex text-sm text-gray-600">
-                    <label htmlFor="photos" className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500">
-                        <span>Upload files</span>
+                    <label htmlFor="photos" className="relative cursor-pointer font-bold text-blue-600 hover:text-blue-500">
+                        <span>Upload assets</span>
                         <input id="photos" name="photos" type="file" className="sr-only" multiple accept="image/*" capture="environment" />
                     </label>
-                    <p className="pl-1">or drag and drop</p>
+                    <p className="pl-1 dark:text-gray-400">or drag and drop</p>
                 </div>
-                <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                <p className="text-[10px] text-gray-500 uppercase font-bold tracking-tighter">JPG, PNG up to 10MB</p>
             </div>
         </div>
       </div>
@@ -122,9 +124,9 @@ export default function SiteLogForm({ projects }: { projects: Project[] }) {
       <div>
         <button
           type="submit"
-          className="w-full inline-flex justify-center py-2 px-4 border shadow-sm text-sm font-medium rounded-md text-white bg-black"
+          className="shimmer-button w-full py-4 bg-gray-900 dark:bg-white text-white dark:text-black rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl"
         >
-          Save Site Log
+          Archive Site Log
         </button>
       </div>
     </form>

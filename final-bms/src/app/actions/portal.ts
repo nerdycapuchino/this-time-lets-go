@@ -1,10 +1,11 @@
 // src/app/actions/portal.ts
 "use server";
 
-import { supabaseAdmin } from "@/lib/supabase/admin";
+import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import { Database } from "../../../types/supabase";
 
 export async function getPortalData(key: string) {
+  const supabaseAdmin = getSupabaseAdmin();
   // Fetch project details using admin client to bypass RLS
   const { data: project, error: projectError } = await supabaseAdmin
     .from('projects')
@@ -39,9 +40,9 @@ export async function getPortalData(key: string) {
     .select('*')
     .eq('project_id', project.id);
 
-  const totalInvoiced = invoices?.reduce((acc, inv) => acc + Number(inv.amount), 0) || 0;
-  const totalPaid = invoices?.filter(inv => inv.status === 'paid')
-    .reduce((acc, inv) => acc + Number(inv.amount), 0) || 0;
+  const totalInvoiced = invoices?.reduce((acc: number, inv: any) => acc + Number(inv.amount), 0) || 0;
+  const totalPaid = invoices?.filter((inv: any) => inv.status === 'paid')
+    .reduce((acc: number, inv: any) => acc + Number(inv.amount), 0) || 0;
 
   return {
     project,

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { generateInvoiceForMilestone } from '@/app/actions/invoices'
+import { generateInvoiceForMilestone } from '@/app/actions/invoicing'
 import { generateInvoicePDF } from '@/lib/pdf-generator'
 import { Loader2, FileText, CheckCircle, X } from 'lucide-react'
 
@@ -9,7 +9,7 @@ interface MilestoneApprovalModalProps {
   isOpen: boolean
   onClose: () => void
   milestone: {
-    id: string
+    id: number
     name: string
     amount: number
   }
@@ -46,8 +46,8 @@ export function MilestoneApprovalModal({
   const handleDownloadPDF = () => {
     if (!invoiceData) return
     const doc = generateInvoicePDF({
-      invoiceNumber: invoiceData.id.slice(0, 8).toUpperCase(),
-      date: invoiceData.issue_date,
+      invoiceNumber: String(invoiceData.id).toUpperCase(),
+      date: invoiceData.created_at || new Date().toISOString(),
       clientName: invoiceData.clientName,
       projectName: invoiceData.projectName,
       items: [{ description: invoiceData.milestoneName, amount: invoiceData.amount }],

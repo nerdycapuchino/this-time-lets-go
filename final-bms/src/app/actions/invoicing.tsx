@@ -97,5 +97,15 @@ export async function generateInvoiceForMilestone(milestoneId: number) {
     revalidatePath(`/dashboard/projects/${milestone.project_id}`);
     revalidatePath(`/dashboard/invoices`);
 
-    return { success: `Invoice #${invoice.id} generated for ${amount.toFixed(2)} ${projectCurrency}.` };
+    return { 
+        success: true, 
+        message: `Invoice #${invoice.id} generated successfully.`,
+        invoice: invoice,
+        details: {
+            milestoneName: milestone.name,
+            clientName: milestone.projects.profiles?.full_name || 'Client',
+            projectName: milestone.projects.name,
+            amount: amount
+        }
+    };
 }
