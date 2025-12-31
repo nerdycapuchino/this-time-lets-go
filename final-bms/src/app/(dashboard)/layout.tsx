@@ -5,8 +5,7 @@ import Header from "@/components/layout/header";
 export default function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode;
-}) {
+    children: React.ReactNode;
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-zinc-950 transition-colors duration-500">
       <Sidebar />
