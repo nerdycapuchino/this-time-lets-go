@@ -9,6 +9,10 @@ const navigationItems = [
   { name: 'ERP', href: '/erp', icon: '⚙️' },
   { name: 'POS', href: '/pos', icon: '🛒' },
   { name: 'Projects', href: '/projects', icon: '📋' },
+    { name: 'Finance', href: '/finance', icon: '💰' },
+  { name: 'HR', href: '/hr', icon: '👔' },
+  { name: 'Marketing', href: '/marketing', icon: '📢' },
+  { name: 'Inventory', href: '/inventory', icon: '📦' },
 ];
 
 export default function Sidebar() {
