@@ -86,3 +86,107 @@ export async function convertToProject(leadId: string) {
     
     return { success: true, projectId: newProject.id }
 }
+
+// CREATE LEAD
+export async function createLead(formData: {
+  full_name: string
+  email: string
+  phone: string
+  company: string
+  service_requested: string
+  status: string
+}) {
+  const supabase = await createClient()
+  
+  const { data, error } = await supabase
+    .from('leads')
+    .insert({
+      full_name: formData.full_name,
+      email: formData.email,
+      phone: formData.phone,
+      company: formData.company,
+      service_requested: formData.service_requested,
+      status: formData.status || 'new',
+      created_at: new Date().toISOString(),
+    })
+    .select()
+    .single()
+
+  if (error) {
+    console.error('Error creating lead:', error)
+    return { error: 'Failed to create lead.' }
+  }
+
+  revalidatePath('/dashboard/leads')
+  return { success: true, data }
+}
+
+// UPDATE LEAD
+export async function updateLead(leadId: string, formData: {
+  full_name: string
+  email: string
+  phone: string
+  company: string
+  service_requested: string
+  status: string
+}) {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('leads')
+    .update({
+      full_name: formData.full_name,
+      email: formData.email,
+      phone: formData.phone,
+      company: formData.company,
+      service_requested: formData.service_requested,
+      status: formData.status,
+    })
+    .eq('id', leadId)
+    .select()
+    .single()
+
+  if (error) {
+    console.error('Error updating lead:', error)
+    return { error: 'Failed to update lead.' }
+  }
+
+  revalidatePath('/dashboard/leads')
+  return { success: true, data }
+}
+
+// DELETE LEAD
+export async function deleteLead(leadId: string) {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('leads')
+    .delete()
+    .eq('id', leadId)
+
+  if (error) {
+    console.error('Error deleting lead:', error)
+    return { error: 'Failed to delete lead.' }
+  }
+
+  revalidatePath('/dashboard/leads')
+  return { success: true }
+}
+
+// GET SINGLE LEAD
+export async function getLeadById(leadId: string) {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('leads')
+    .select('*')
+    .eq('id', leadId)
+    .single()
+
+  if (error) {
+    console.error('Error fetching lead:', error)
+    return null
+  }
+
+  return data
+}
